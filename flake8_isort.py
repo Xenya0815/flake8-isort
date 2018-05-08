@@ -48,8 +48,7 @@ class Flake8Isort(object):
 
     @classmethod
     def parse_options(cls, options):
-        if options.max_line_length:
-            cls.setting_overrides['line_length'] = options.max_line_length
+        cls.setting_overrides['line_length'] = options.max_line_length
 
         if options.no_isort_config is None:
             cls.config_file = True
