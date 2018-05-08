@@ -30,6 +30,7 @@ class Flake8Isort(object):
     )
 
     config_file = None
+    setting_overrides = {}
 
     def __init__(self, tree, filename, lines, search_current=True):
         self.filename = filename
@@ -47,6 +48,9 @@ class Flake8Isort(object):
 
     @classmethod
     def parse_options(cls, options):
+        if options.max_line_length:
+            cls.setting_overrides['line_length'] = options.max_line_length
+
         if options.no_isort_config is None:
             cls.config_file = True
         else:
@@ -62,7 +66,8 @@ class Flake8Isort(object):
                     file_path=self.filename,
                     file_contents=''.join(self.lines),
                     check=True,
-                    settings_path=settings_file
+                    settings_path=settings_file,
+                    **self.setting_overrides
                 )
 
             for line_num, message in self.sortimports_linenum_msg(sort_result):
